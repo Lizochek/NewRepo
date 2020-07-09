@@ -68,8 +68,9 @@ int Stack<T>::size()
 template <typename T>
 bool Stack<T>::empty()
 {
-	return _size == 0 ? true : false;
+	return _size == 0;
 }
+
 
 int get(Stack <int> st, int  i);
 int main()
@@ -106,7 +107,7 @@ int get(Stack <int> st, int  i)
 	for (int j = 0; j < n; j++)
 	{
 		st.push(st1.top());
-
+		st1.pop();
 	}
 	return s;
 }
