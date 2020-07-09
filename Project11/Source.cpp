@@ -4,8 +4,6 @@
 using namespace std;
 
 class Stack {
-	Stack() :_top(NULL), _size(0) {}
-
 	struct Node
 	{
 		Node(int el) :data(el) {}
@@ -16,8 +14,9 @@ class Stack {
 private:
 	Node* _top;
 	int _size;
-
-	void push_back(const int el)
+public:
+	Stack() :_top(NULL), _size(0) {}
+	void push(const int el)
 	{
 
 		if (_top != NULL)
@@ -31,10 +30,14 @@ private:
 		}
 		_size++;
 	}
-	void Pop()
+	void pop()
 	{
 
-		if (_top == NULL) cout << "Error: Out of range";
+		if (_top == NULL)
+		{
+			cout << "Error: Out of range";
+			return;
+		}
 
 		Node* temp = _top; //сохраняем последний элемент во временную переменную
 		_top = _top->next; //предпоследний(тот,на который указывает последний) элемент делаем последним
@@ -42,25 +45,62 @@ private:
 		_size--;
 	}
 
-	int& top()
+	int top()
 	{
 		if (_top == NULL) cout << "Error: Stack is empty!";
 
 		return _top->data;
-
 	}
+
 	int size()
 	{
 		return _size;
 	}
+
 	bool empty()
 	{
-		return _size == 0 ? true : false;
+		return _size == 0;
 	}
 };
+
+
+int get(Stack st, int  i);
+
 int main()
 {
-	int top, size;
-	cin >>
-		Stack st()
+	Stack  st;
+	int n, a;
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> a;
+		st.push(a);
+	}
+	int m;
+	cin >> m;
+	for (int i = 0; i < m; i++)
+	{
+		cin >> a;
+		cout << get(st, a) << endl;
+	}
+
+}
+int get(Stack st, int  i)
+{
+	int s = 0, n;
+	Stack st1;
+	n = st.size() - i - 1;
+
+	for (int j = 0; j < n; j++)
+	{
+		st1.push(st.top());
+		st.pop();
+	}
+	s = st.top();
+	for (int j = 0; j < n; j++)
+	{
+		st.push(st1.top());
+		st1.pop();
+	}
+	return s;
 }
