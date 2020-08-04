@@ -1,66 +1,81 @@
 #include<iostream>
-#include<exception>
-
 using namespace std;
+template <typename T>
+class List {
 
-class Stack {
-	Stack() :_top(NULL), _size(0) {}
-
-	struct Node
+public: struct Node {
+	Node() {};
+	Node(T value, Node* next)
 	{
-		Node(int el) :data(el) {}
-		Node(int el, Node* node) :data(el), next(node) {}
-		Node* next;
-		int data;
-	};
-private:
-	Node* _top;
-	int _size;
-
-	void push_back(const int el)
-	{
-
-		if (_top != NULL)
-		{
-			Node* temp = new Node(el, _top);//создаЄм новый нод, инициализируем его переменной el и он указывает на _top(текущий конец стека)
-			_top = temp; //новый элемент делаем последним
-		}
-		else
-		{
-			_top = new Node(el); //создаЄм новый нод и инициализируем его переменной el	
-		}
-		_size++;
+		this->next = next;
+		this->value = value;
 	}
-	void Pop()
-	{
-
-		if (_top == NULL) cout << "Error: Out of range";
-
-		Node* temp = _top; //сохран€ем последний элемент во временную переменную
-		_top = _top->next; //предпоследний(тот,на который указывает последний) элемент делаем последним
-		delete temp; //удал€ем последний элемент
-		_size--;
-	}
-
-	int& top()
-	{
-		if (_top == NULL) cout << "Error: Stack is empty!";
-
-		return _top->data;
-
-	}
-	int size()
-	{
-		return _size;
-	}
-	bool empty()
-	{
-		return _size == 0 ? true : false;
-	}
+	T value;
+	Node* next;
 };
+private: Node* head;
+public:
+	List();
+	List(const List&);
+	void print();
+	void push_top(T val);
+	void push_back(T val);
+	T top();
+	T get(int pos);
+	T erase(int pos);
+	int size();
+	bool empty();
+	~List();
+
+};
+void print(Node* head);
+void add(Node* head, int val);
 int main()
 {
-	int top, size;
-	cin >>
-		Stack st()
+	Node* head = new Node(1, new Node(2, new Node(5, new Node(3, new Node(4, NULL)))));
+
+	/*head = new Node;
+	head->value = 1;
+	head->next = NULL;
+	add(head, 2);
+	add(head, 5);
+	add(head, 3);
+	add(head, 4);*/
+
+	/*head = new Node;
+	head->value = 1;
+	head->next = new Node;
+	head->next->value = 2;
+	head->next->next = new Node;
+	head->next->next->value = 5;
+	head->next->next->next = new Node;
+	head->next->next->next->value = 3;
+	head->next->next->next->next = new Node;
+	head->next->next->next->next->value = 4;
+	head->next->next->next->next->next = NULL;*/
+	print(head);
+
+}
+void print(Node* head)
+{
+
+	while (head != NULL)
+	{
+		cout << head->value << "->";
+		head = head->next;
+	}
+
+}
+void add(Node* head, int val)
+{
+
+
+	while (head->next != NULL)
+	{
+
+		head = head->next;
+	}
+	head->next = new Node;
+	head->next->value = val;
+	head->next->next = NULL;
 }
