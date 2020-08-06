@@ -27,6 +27,7 @@ public:
 	bool empty();
 	~List();
 
+
 };
 void print(Node* head);
 void add(Node* head, int val);
