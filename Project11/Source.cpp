@@ -90,21 +90,22 @@ template <typename T>
 void List<T>::push_back(T val)
 {
 	_size++;
-
+	
 	if (head == NULL)
 	{
 		head = new Node(val);
 		return;
 	}
-	
-	while (head->next != NULL)
+	Node* temp = head;
+	while (temp->next != NULL)
 	{
 
-		head = head->next;
+		temp = temp->next;
 	}
-	head->next = new Node;
-	head->next->value = val;
-	head->next->next = NULL;
+		
+	temp->next = new Node;
+	temp->next->value = val;
+	temp->next->next = NULL;
 }
 template <typename T>
 void List<T>::push_top(T val)
@@ -112,8 +113,8 @@ void List<T>::push_top(T val)
 
 	if (head != NULL)
 	{
-		Node* temp = new Node(val, head);//создаём новый нод, инициализируем его переменной el и он указывает на head(текущий конец листа)
-		head = temp; //новый элемент делаем последним
+		Node* temp = new Node(val, head);//создаём новый нод, инициализируем его переменной val и он указывает на head(текущий конец листа)
+		head = temp; //новый элемент делаем первым
 	}
 	else
 	{
