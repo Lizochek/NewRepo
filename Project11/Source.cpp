@@ -1,66 +1,52 @@
 #include<iostream>
 #include<exception>
-
+#include<queue>
 using namespace std;
-
-class Stack {
-	Stack() :_top(NULL), _size(0) {}
-
-	struct Node
-	{
-		Node(int el) :data(el) {}
-		Node(int el, Node* node) :data(el), next(node) {}
-		Node* next;
-		int data;
-	};
-private:
-	Node* _top;
-	int _size;
-
-	void push_back(const int el)
-	{
-
-		if (_top != NULL)
-		{
-			Node* temp = new Node(el, _top);//создаём новый нод, инициализируем его переменной el и он указывает на _top(текущий конец стека)
-			_top = temp; //новый элемент делаем последним
-		}
-		else
-		{
-			_top = new Node(el); //создаём новый нод и инициализируем его переменной el	
-		}
-		_size++;
-	}
-	void Pop()
-	{
-
-		if (_top == NULL) cout << "Error: Out of range";
-
-		Node* temp = _top; //сохраняем последний элемент во временную переменную
-		_top = _top->next; //предпоследний(тот,на который указывает последний) элемент делаем последним
-		delete temp; //удаляем последний элемент
-		_size--;
-	}
-
-	int& top()
-	{
-		if (_top == NULL) cout << "Error: Stack is empty!";
-
-		return _top->data;
-
-	}
-	int size()
-	{
-		return _size;
-	}
-	bool empty()
-	{
-		return _size == 0 ? true : false;
-	}
+struct Node
+{
+	Node(int el) :data(el) {}
+	Node* right=NULL;
+	Node* left=NULL;
+	int data;
 };
+void add(Node*, int);
+void print(Node*);
+
+
 int main()
 {
-	int top, size;
-	cin >>
-		Stack st()
+	Node* root=new Node(64);
+
+	root->left = new Node(22);
+	root->left->left = new Node(17);
+	root->left->right = new Node(37);
+	root->left->right->right = new Node(54);
+	root->left->right->left= new Node(23);
+	root->left->right->left->right = new Node(35);
+
+	root->right = new Node(112);
+	root->right->right = new Node(114);
+	root->right->left= new Node(72);
+
+	print(root);
+}
+void print(Node* root)
+{
+	queue<Node*> q;
+	q.push(root);
+	while (!q.empty())
+	{
+		//извлекаем элемент
+
+		Node* r=NULL;
+		r=q.front();
+		q.pop();
+		//обрабатываем элемент
+		if(r!=NULL)
+		cout << r->data<<" ";
+		//добавляем прямых потомков элемента в очередь
+		q.push(r->right);
+		q.push(r->left);
+
+	}
 }
