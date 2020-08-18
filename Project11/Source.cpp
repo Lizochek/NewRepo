@@ -23,7 +23,7 @@ public: struct Node {
 	Node* prev;
 };
 private: Node* head; 
-	   Node* tail;
+	  
 	   int _size;
 	   
 public:
