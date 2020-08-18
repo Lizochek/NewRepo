@@ -4,22 +4,26 @@ template <typename T>
 class List {
 
 public: struct Node {
-	Node() { this->next = NULL; };
-	Node(T value, Node* next)
+	Node() { this->next = NULL; this->prev = NULL;};
+	Node(T value, Node* next, Node* prev)
 	{
 		this->next = next;
+		this->prev = prev;
 		this->value = value;
 	}
 	Node(T value)
 	{
 		this->value = value;
 		this->next = NULL;
+		this->prev = NULL;
 
 	}
 	T value;
 	Node* next;
+	Node* prev;
 };
 private: Node* head; 
+	   Node* tail;
 	   int _size;
 	   
 public:
@@ -45,6 +49,7 @@ List<T>::List()
 {
 	_size = 0;
 	head = NULL;
+	tail = NULL;
 }
 template <typename T>
 List<T>::List(const List& k)
@@ -70,26 +75,64 @@ List<T>::List(const List& k)
 	for (int i = 1; i < k._size; i++)
 	{
 		source = source->next;
-		copy->next = new Node(source->value);
+		copy->next = new Node(source->value,NULL,copy);
 		copy = copy->next;
 	}
+	tail = copy;
+	
 	
 }
 template <typename T>
 void List<T>::print(Node* head)
 {
+	//ВЫВОДИМ СПИСОК С КОНЦА
+	Node* temp = tail;                   //Временный указатель на адрес последнего элемента
 
-	while (head != NULL)
+	while (temp != NULL)               //Пока не встретится пустое значение
+	{
+		cout << temp->data << " ";        //Выводить значение на экран
+		temp = temp->prev;             //Указываем, что нужен адрес предыдущего элемента
+	}
+	cout << "\n";
+
+	//ВЫВОДИМ СПИСОК С НАЧАЛА
+	temp = head;                       //Временно указываем на адрес первого элемента
+	while (temp != NULL)              //Пока не встретим пустое значение
+	{
+		cout << temp->data << " ";        //Выводим каждое считанное значение на экран
+		temp = temp->next;             //Смена адреса на адрес следующего элемента
+	}
+	cout << "\n";
+	/*while (head != NULL)
 	{
 		cout << head->value << "->";
 		head = head->next;
-	}
+	}*/
 
 }
 template <typename T>
 void List<T>::push_back(T val)
 {
+
+	Node* temp = new Node(val);
+
+
+	if (head != NULL)                    
+	{
+		temp->prev = tail;               
+		tail->next = temp;               
+		tail = temp;                     
+	}
+	else //Если список пустой
+	{
+		               
+		head = tail = temp;              
+	}
 	_size++;
+}
+	/*
+	Node* temp = new  Node;
+
 	
 	if (head == NULL)
 	{
@@ -106,48 +149,44 @@ void List<T>::push_back(T val)
 	temp->next = new Node;
 	temp->next->value = val;
 	temp->next->next = NULL;
-}
+}*/
 template <typename T>
 void List<T>::push_top(T val)
 {
 
 	if (head != NULL)
 	{
-		Node* temp = new Node(val, head);//создаём новый нод, инициализируем его переменной val и он указывает на head(текущий конец листа)
+		Node* temp = new Node(val, head,NULL);//создаём новый нод, инициализируем его переменной val и он указывает на head(текущий конец листа)
+		head->prev = temp;
 		head = temp; //новый элемент делаем первым
 	}
 	else
 	{
-		head = new Node(val); 	
+		Node* temp = new Node(val);
+		head = tail = temp;
 	}
 	_size++;
 }
 template <typename T>
-void List<T>::pop() 
+void List<T>::pop()
 {
-	
-	if (head == NULL)
+	if (tail == NULL)  return;
+	Node* temp = tail;
+
+	Node* prev = tail->prev; 
+	Node* next = tail->next; 
+	if (prev != NULL)
+		prev->next = next; 
+	if (next != NULL)
+		next->prev = prev; 
+	if (head == tail)
 	{
-		cout << "Error: List is empty!";
-		return;
-	}
-	_size--;
-	Node* temp = head;
-	if (temp->next == NULL)
-	{
-		delete temp;
 		head = NULL;
-		return;
 	}
-	while (temp->next->next != NULL)
-	{
-
-		temp = temp->next;
-	}
+	tail = tail->prev;
+	delete temp; 
+	_size--;
 	
-	delete temp->next;
-	temp->next = NULL;
-
 }
 
 template <typename T>
@@ -182,14 +221,18 @@ void List<T>::pop_front()
 		return;
 	}
 
+	
 	Node* temp = head; //сохраняем последний элемент во временную переменную
+	if (head == tail) tail = NULL;
 	head = head->next; //предпоследний(тот,на который указывает последний) элемент делаем последним
+	
 	delete temp; //удаляем последний элемент
 	_size--;
 }
 template <typename T>
 T List<T>::get( int  pos)
 {
+
 	if (pos == 0)
 	{
 		return top();
@@ -199,10 +242,22 @@ T List<T>::get( int  pos)
 		cout << "Error";
 		return NULL;
 	}
-	Node* temp = head;
-	for (int i = 0; i < pos; i++)
+	Node* temp;
+	if (pos < _size / 2) {
+		temp = head;
+
+		for (int i = 0; i < pos; i++)
+		{
+			temp = temp->next;
+		}
+	}
+	else
 	{
-		temp = temp->next;
+		temp = tail;
+		for (int i = _size - 1; i > pos; i--)
+		{
+			temp= temp->prev;
+		}
 	}
 	return temp->value;
 	
@@ -214,20 +269,38 @@ void List<T>::erase(int  pos)
 	{
 		return pop_front();
 	}
+	if (pos == _size - 1) return pop();
 	if (pos >= _size)
 	{
 		cout << "Error";
 		return;
 	}
-	Node* temp = head;
-	for (int i = 0; i < pos-1; i++)
-	{
+	Node* temp;
+	if (pos < _size / 2) {
+		temp = head;
 
-		temp = temp->next;
+		for (int i = 0; i < pos; i++)
+		{
+			temp = temp->next;
+		}
 	}
-	Node* for_del = temp->next;
-	temp->next = temp->next->next;
-	delete for_del;
+	else
+	{
+		temp = tail;
+		for (int i = _size - 1; i > pos; i--)
+		{
+			temp = temp->prev;
+		}
+	}
+	Node* prev = temp->prev;
+	Node* next = temp->next;
+	if (prev != NULL)
+		prev->next = next;
+	if (next != NULL)
+		next->prev = prev;
+	
+	delete temp;
+	_size--;
 
 }
 template <typename T>
