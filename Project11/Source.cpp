@@ -23,8 +23,7 @@ public: struct Node {
 	Node* prev;
 };
 private: Node* head; 
-	  
-	   int _size;
+		 int _size;
 	   
 public:
 	List();
@@ -49,7 +48,6 @@ List<T>::List()
 {
 	_size = 0;
 	head = NULL;
-	tail = NULL;
 }
 template <typename T>
 List<T>::List(const List& k)
@@ -85,13 +83,14 @@ List<T>::List(const List& k)
 template <typename T>
 void List<T>::print(Node* head)
 {
-	
-	temp = head;                       //Временно указываем на адрес первого элемента
-	while (temp != NULL)              //Пока не встретим пустое значение
+	if (head == NULL) return;
+	Node* temp = head;  
+                   
+	do              
 	{
-		cout << temp->data << " ";        //Выводим каждое считанное значение на экран
-		temp = temp->next;             //Смена адреса на адрес следующего элемента
-	}
+		cout << temp->data << " ";       
+		temp = temp->next;             
+	} while (temp != head);
 	cout << "\n";
 	/*while (head != NULL)
 	{
@@ -104,19 +103,26 @@ template <typename T>
 void List<T>::push_back(T val)
 {
 
-	Node* temp = new Node(val);
+	
 
 
 	if (head != NULL)                    
 	{
-		temp->prev = tail;               
-		tail->next = temp;               
-		tail = temp;                     
+		Node* temp = new Node();
+		temp->data = val;
+		temp->next = head;
+		temp->prev = head->prev;
+		head->prev = temp;
+		temp->prev->next = temp;
+		
 	}
 	else //Если список пустой
 	{
 		               
-		head = tail = temp;              
+		head = new Node();
+		head->data = val;
+		head->prev = head;
+		head->next = head;
 	}
 	_size++;
 }
