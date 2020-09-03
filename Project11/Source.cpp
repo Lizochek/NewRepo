@@ -1,15 +1,16 @@
 #include<iostream>
 using namespace std;
-void rec2(int b,int a)
+int rec2(int n)
 {
-	cout << a << " ";
-	if (a==b) return;
-	rec2(b,(a>b?a-1:a+1));
+	if (n==0)
+		return 0;
+	return n % 10 + rec2(n / 10);
+	//sum = n % 10 + (n / 10) % 10 + (n / 10 / 10) % 10 + ... + 0;
 }
 int main()
 {
-	int b,a;
-	cin >> a>>b;
+	int n;
+	cin >> n;
 	//rec(n);
-	rec2(b,a);
+	cout<<rec2(n);
 }
