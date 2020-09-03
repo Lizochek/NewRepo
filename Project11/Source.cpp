@@ -168,21 +168,15 @@ void List<T>::pop()
 {
 	if (head != NULL)
 	{
-		Node* temp = new Node();
-		temp->data = val;
-		temp->prev = head;
-		temp->next = head->next;
-		head->next = temp;
+		Node* temp = head;
+		head = head->next;
+		delete temp;
+		_size--;
 	}
-	else //Если список пустой
+	else
 	{
-
-		head = new Node();
-		head->data = val;
-		head->prev = head;
-		head->next = head;
+		
 	}
-	_size++;
 }
 
 template <typename T>
