@@ -102,10 +102,6 @@ void List<T>::print(Node* head)
 template <typename T>
 void List<T>::push_back(T val)
 {
-
-	
-
-
 	if (head != NULL)                    
 	{
 		Node* temp = new Node();
@@ -149,40 +145,44 @@ void List<T>::push_back(T val)
 template <typename T>
 void List<T>::push_top(T val)
 {
-
 	if (head != NULL)
 	{
-		Node* temp = new Node(val, head,NULL);//создаЄм новый нод, инициализируем его переменной val и он указывает на head(текущий конец листа)
-		head->prev = temp;
-		head = temp; //новый элемент делаем первым
+		Node* temp = new Node();
+		temp->data = val;
+		temp->prev = head;
+		temp->next = head->next;
+		head->next = temp;
 	}
-	else
+	else //≈сли список пустой
 	{
-		Node* temp = new Node(val);
-		head = tail = temp;
+
+		head = new Node();
+		head->data = val;
+		head->prev = head;
+		head->next = head;
 	}
 	_size++;
 }
 template <typename T>
 void List<T>::pop()
 {
-	if (tail == NULL)  return;
-	Node* temp = tail;
-
-	Node* prev = tail->prev; 
-	Node* next = tail->next; 
-	if (prev != NULL)
-		prev->next = next; 
-	if (next != NULL)
-		next->prev = prev; 
-	if (head == tail)
+	if (head != NULL)
 	{
-		head = NULL;
+		Node* temp = new Node();
+		temp->data = val;
+		temp->prev = head;
+		temp->next = head->next;
+		head->next = temp;
 	}
-	tail = tail->prev;
-	delete temp; 
-	_size--;
-	
+	else //≈сли список пустой
+	{
+
+		head = new Node();
+		head->data = val;
+		head->prev = head;
+		head->next = head;
+	}
+	_size++;
 }
 
 template <typename T>
