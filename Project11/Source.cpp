@@ -145,23 +145,8 @@ temp->next->next = NULL;
 template <typename T>
 void List<T>::push_top(T val)
 {
-	if (head != NULL)
-	{
-		Node* temp = new Node();
-		temp->data = val;
-		temp->prev = head;
-		temp->next = head->next;
-		head->next = temp;
-	}
-	else //Если список пустой
-	{
-
-		head = new Node();
-		head->data = val;
-		head->prev = head;
-		head->next = head;
-	}
-	_size++;
+	push_back(val);
+	head = head->prev;
 }
 template <typename T>
 void List<T>::pop()
@@ -228,7 +213,7 @@ T List<T>::get(int  pos)
 	else
 	{
 		temp = head;
-		for (int i = _size - 1; i > pos; i--)
+		for (int i = _size; i > pos; i--)
 		{
 			temp = temp->prev;
 		}
@@ -261,7 +246,7 @@ void List<T>::erase(int  pos)
 	else
 	{
 		temp = head;
-		for (int i = _size - 1; i > pos; i--)
+		for (int i = _size; i > pos; i--)
 		{
 			temp = temp->prev;
 		}
