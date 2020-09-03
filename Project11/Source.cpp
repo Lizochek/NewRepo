@@ -260,7 +260,7 @@ void List<T>::erase(int  pos)
 	}
 	else
 	{
-		temp = tail;
+		temp = head;
 		for (int i = _size - 1; i > pos; i--)
 		{
 			temp = temp->prev;
