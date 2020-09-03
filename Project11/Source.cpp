@@ -227,7 +227,7 @@ T List<T>::get(int  pos)
 	}
 	else
 	{
-		temp = tail;
+		temp = head;
 		for (int i = _size - 1; i > pos; i--)
 		{
 			temp = temp->prev;
