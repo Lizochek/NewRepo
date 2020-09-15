@@ -76,8 +76,9 @@ List<T>::List(const List& k)
 		copy->next = new Node(source->value, NULL, copy);
 		copy = copy->next;
 	}
-	tail = copy;
-
+	
+	copy->next = head;
+	head->prev = copy;
 
 }
 template <typename T>
@@ -105,7 +106,7 @@ void List<T>::push_back(T val)
 	if (head != NULL)
 	{
 		Node* temp = new Node();
-		temp->data = val;
+		temp->value = val;
 		temp->next = head;
 		temp->prev = head->prev;
 		head->prev = temp;
@@ -116,7 +117,7 @@ void List<T>::push_back(T val)
 	{
 
 		head = new Node();
-		head->data = val;
+		head->value = val;
 		head->prev = head;
 		head->next = head;
 	}
@@ -153,10 +154,35 @@ void List<T>::pop()
 {
 	if (head != NULL)
 	{
-		Node* temp = head;
-		head = head->next;
+		Node* temp = head->prev;
+		head->prev = temp->prev;
+		temp->prev->next = head;
 		delete temp;
 		_size--;
+		if (_size == 0)
+			head = NULL;
+	}
+	
+	else
+	{
+
+		cout << "Error: Out of range";
+		return;
+	}
+}
+template <typename T>
+void List<T>::pop_front()
+{
+	if (head != NULL)
+	{
+		Node* temp = head;
+		head = head->next;
+		head->prev = temp->prev;
+		temp->prev->next = head;
+		delete temp;
+		_size--;
+		if (_size == 0)
+			head = NULL;
 	}
 	else
 	{
@@ -265,11 +291,12 @@ void List<T>::erase(int  pos)
 template <typename T>
 List<T>::~List()
 {
-	while (head != NULL)
+	while (_size>0)
 	{
 		Node* temp = head;
 		head = head->next;
 		delete temp;
+		_size--;
 	}
 }
 int main()
