@@ -29,7 +29,7 @@ public:
 	List();
 	List(const List&);
 	void print(Node* head);
-	void add(Node* head, int val);
+	void insert(int pos, T val);
 	void push_top(T val);
 	void push_back(T val);
 	void pop_front();
@@ -76,10 +76,8 @@ List<T>::List(const List& k)
 		copy->next = new Node(source->value, NULL, copy);
 		copy = copy->next;
 	}
-	
 	copy->next = head;
 	head->prev = copy;
-
 }
 template <typename T>
 void List<T>::print(Node* head)
@@ -93,11 +91,26 @@ void List<T>::print(Node* head)
 		temp = temp->next;
 	} while (temp != head);
 	cout << "\n";
-	/*while (head != NULL)
+}
+template <typename T>
+void List<T>::insert(int pos,T val)
+{
+	if (pos > _size) {
+		cout<<"Error: Out of range";
+		return;
+	}
+	if (pos == 0) push_top(val);
+	else if (pos == _size) push_back(val);
+	else 
 	{
-		cout << head->value << "->";
-		head = head->next;
-	}*/
+		Node* temp = head;
+		for (int i = 0; i < pos-1; ++i)
+			temp = temp->next;
+		Node* node = new Node(val, temp->next, temp);
+		temp->next = node;
+		node->next->prev = node;
+		_size++;
+	}
 
 }
 template <typename T>
@@ -123,26 +136,6 @@ void List<T>::push_back(T val)
 	}
 	_size++;
 }
-/*
-Node* temp = new  Node;
-
-
-if (head == NULL)
-{
-	head = new Node(val);
-	return;
-}
-Node* temp = head;
-while (temp->next != NULL)
-{
-
-	temp = temp->next;
-}
-
-temp->next = new Node;
-temp->next->value = val;
-temp->next->next = NULL;
-}*/
 template <typename T>
 void List<T>::push_top(T val)
 {
@@ -173,7 +166,7 @@ void List<T>::pop()
 template <typename T>
 void List<T>::pop_front()
 {
-	if (head != NULL)
+	if (_size > 0)
 	{
 		Node* temp = head;
 		head = head->next;
@@ -203,6 +196,7 @@ T List<T>::top()
 	return head->value;
 
 }
+
 template <typename T>
 int List<T>::size()
 {
