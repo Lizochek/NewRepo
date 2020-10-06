@@ -13,9 +13,7 @@ public: struct Node {
 	}
 	Node(T value)
 	{
-		this->value = value;
-		this->next = NULL;
-		this->prev = NULL;
+		Node(value, NULL, NULL);
 
 	}
 	T value;
@@ -158,7 +156,6 @@ void List<T>::pop()
 	
 	else
 	{
-
 		cout << "Error: Out of range";
 		return;
 	}
@@ -273,9 +270,7 @@ void List<T>::erase(int  pos)
 	}
 	Node* prev = temp->prev;
 	Node* next = temp->next;
-	if (prev != NULL)
 		prev->next = next;
-	if (next != NULL)
 		next->prev = prev;
 
 	delete temp;
